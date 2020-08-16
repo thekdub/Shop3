@@ -1,0 +1,24 @@
+name: Shop3
+main: com.thekdub.shop3.Shop3
+author: thekdub
+version: 1.0.0
+website: https://www.unknowntekkit.com/
+softdepend: [ItemUtils]
+depend: [Vault]
+database: true
+description: "A powerful chat based shop system for Minecraft servers"
+prefix: "[Shop3]"
+commands:
+  shop3:
+    description: "View information about the Shop^3 plugin."
+    usage: "/Shop3"
+    aliases: [shop,shopcubed,shopcube]
+    permission: "shop3.command.shop3"
+    permission-message: "You do not have permission to use /Shop3!"
+
+permissions:
+  shop3.*:
+    description: "Grants access to all Shop^3 permissions."
+    default: op
+    children:
+      shop3.command.shop3: true
