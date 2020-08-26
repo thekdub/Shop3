@@ -3,6 +3,8 @@ package com.thekdub.shop3;
 import com.thekdub.shop3.commands.*;
 import com.thekdub.shop3.objects.Transaction;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -28,7 +30,7 @@ public class Shop3 extends JavaPlugin {
       return;
     }
     getLogger().log(Level.INFO, "Hooked Vault Economy successfully!");
-    registerCommands();
+    //registerCommands();
   }
   
   public void onDisable() {
@@ -49,20 +51,20 @@ public class Shop3 extends JavaPlugin {
     }
     return economy != null;
   }
-  
-  private void registerCommands() {
-    getCommand("Buy").setExecutor(new CmdBuy());
-    getCommand("CancelSell").setExecutor(new CmdCancelSell());
-    getCommand("QuickSell").setExecutor(new CmdQuickSell());
-    getCommand("Sell").setExecutor(new CmdSell());
-    getCommand("Selling").setExecutor(new CmdSelling());
-    getCommand("Shop3").setExecutor(new CmdShop3());
-    getCommand("Stock").setExecutor(new CmdStock());
-  }
-  
-  
+
+//  private void registerCommands() {
+//    getCommand("Buy").setExecutor(new CmdBuy());
+//    getCommand("CancelSell").setExecutor(new CmdCancelSell());
+//    getCommand("QuickSell").setExecutor(new CmdQuickSell());
+//    getCommand("Sell").setExecutor(new CmdSell());
+//    getCommand("Selling").setExecutor(new CmdSelling());
+//    getCommand("Shop3").setExecutor(new CmdShop3());
+//    getCommand("Stock").setExecutor(new CmdStock());
+//  }
+
+
   public static void main(String[] args) {
-    
+
     String buyer = "thekdub";
     String seller = "server";
     int id = 263;
@@ -71,7 +73,37 @@ public class Shop3 extends JavaPlugin {
     double price = 1000.03;
     long timestamp = System.currentTimeMillis();
     System.out.println(String.format("%s purchased %dx %d:%d from %s for $%.2f on %7$tF %7$tI:%7$tM %7$Tp %7$tZ",
-        buyer, amount, id, durability, seller, price, timestamp));
+          buyer, amount, id, durability, seller, price, timestamp));
   }
-  
+
+  public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    StringBuilder argsBuilder = new StringBuilder();
+    for (String arg : args) {
+      if (argsBuilder.length() > 0) {
+        argsBuilder.append(" ");
+      }
+      argsBuilder.append(arg);
+    }
+    String argString = argsBuilder.toString();
+    getLogger().log(Level.INFO, sender.getName() + ": /" + cmd.getLabel() + " " + argString);
+    switch (cmd.getLabel().toLowerCase()) {
+      case "buy":
+        return CmdBuy.execute(sender, cmd, args);
+      case "cancelsell":
+        return CmdCancelSell.execute(sender, cmd, args);
+      case "quicksell":
+        return CmdQuickSell.execute(sender, cmd, args);
+      case "sell":
+        return CmdSell.execute(sender, cmd, args);
+      case "selling":
+        return CmdSelling.execute(sender, cmd, args);
+      case "shop3":
+        return CmdShop3.execute(sender, cmd, args);
+      case "stock":
+        return CmdStock.execute(sender, cmd, args);
+      default:
+        return false;
+    }
+  }
+
 }

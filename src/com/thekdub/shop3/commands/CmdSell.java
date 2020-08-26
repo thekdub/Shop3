@@ -4,9 +4,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-public class CmdSell implements CommandExecutor {
-  @Override
-  public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+public class CmdSell extends Cmd {
+  public static boolean execute(CommandSender sender, Command cmd, String[] args) {
     return false;
   }
 }
