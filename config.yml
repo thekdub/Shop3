@@ -1,0 +1,12 @@
+# Enable Shop^3 commands.
+# Changing a command to false will remove access for all users without the Shop3.Admin permission.
+commands:
+  buy: true
+  cancelsell: true
+  quicksell: true
+  sell: true
+  selling: true
+  shop3: true
+  shop3.insight: true
+  shop3.history: true
+  stock: true
