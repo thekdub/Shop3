@@ -16,6 +16,7 @@ public class Shop3 extends JavaPlugin {
   
   private static Shop3 instance;
   private static Economy economy;
+  private static DBManager dbManager;
   
   public void onEnable() {
     instance = this;
@@ -31,10 +32,13 @@ public class Shop3 extends JavaPlugin {
     }
     getLogger().log(Level.INFO, "Hooked Vault Economy successfully!");
     registerCommands();
+    dbManager = new DBManager();
+    dbManager.connect();
+    dbManager.createTables();
   }
   
   public void onDisable() {
-  
+    dbManager.disconnect();
   }
   
   public static Shop3 getInstance() {
