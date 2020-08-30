@@ -17,7 +17,10 @@ public class Shop3 extends JavaPlugin {
   private static Shop3 instance;
   private static Economy economy;
   private static DBManager dbManager;
-  
+
+  /**
+   * Startup process.
+   */
   public void onEnable() {
     instance = this;
     if (!new File(getDataFolder() + File.separator + "config.yml").exists()) {
@@ -36,7 +39,10 @@ public class Shop3 extends JavaPlugin {
     dbManager.connect();
     dbManager.createTables();
   }
-  
+
+  /**
+   * Shutdown process.
+   */
   public void onDisable() {
     dbManager.disconnect();
   }
@@ -44,7 +50,11 @@ public class Shop3 extends JavaPlugin {
   public static Shop3 getInstance() {
     return instance;
   }
-  
+
+  /**
+   * Hooks into the Vault economy provider.
+   * @return True = Economy hooked successfully. False = Economy hook failed.
+   */
   private boolean hookEconomy() {
     Plugin vault = getServer().getPluginManager().getPlugin("Vault");
     if (vault != null) {
@@ -56,6 +66,9 @@ public class Shop3 extends JavaPlugin {
     return economy != null;
   }
 
+  /**
+   * Registers commands with the server.
+   */
   private void registerCommands() {
     getCommand("Buy").setExecutor(this);
     getCommand("CancelSell").setExecutor(this);
@@ -68,6 +81,14 @@ public class Shop3 extends JavaPlugin {
     getCommand("Stock").setExecutor(this);
   }
 
+  /**
+   * Handles execution of commands.
+   * @param sender The command's sender.
+   * @param cmd The command object.
+   * @param label The label of the command.
+   * @param args The arguments provided by the sender.
+   * @return True = executed successfully. False = Execution failed or no permission.
+   */
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     StringBuilder argsBuilder = new StringBuilder();
     for (String arg : args) {

@@ -7,11 +7,11 @@ public class Transaction {
   public final String seller;
   public final int id;
   public final int durability;
-  public final int amount;
+  public final double amount;
   public final double price;
   public final long timestamp;
   
-  public Transaction(String buyer, String seller, int id, int durability, int amount, double price, long timestamp) {
+  public Transaction(String buyer, String seller, int id, int durability, double amount, double price, long timestamp) {
     this.buyer = buyer.toLowerCase();
     this.seller = seller.toLowerCase();
     this.id = id;
@@ -46,11 +46,11 @@ public class Transaction {
   
   @Override
   public String toString() {
-    return String.format("%s purchased %dx %d:%d from %s for $%.2f on %7$tF %7$tI:%7$tM %7$Tp %7$tZ",
+    return String.format("%s purchased %.0fx %d:%d from %s for $%.2f on %7$tF %7$tI:%7$tM %7$Tp %7$tZ",
         buyer, amount, id, durability, seller, price, timestamp);
   }
 
   public String toDatabaseString() {
-    return String.format("\"%s\",\"%s\",%d,%d,%d,%f,%d", buyer, seller, id, durability, amount, price, timestamp);
+    return String.format("\"%s\",\"%s\",%d,%d,%f,%f,%d", buyer, seller, id, durability, amount, price, timestamp);
   }
 }

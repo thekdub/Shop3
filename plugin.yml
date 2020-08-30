@@ -3,7 +3,7 @@ main: com.thekdub.shop3.Shop3
 author: thekdub
 version: 1.0.0
 website: https://www.unknowntekkit.com/
-softdepend: [ItemUtils]
+softdepend: [ItemUtils,MCUUID]
 depend: [Vault]
 database: true
 description: "A powerful chat based shop system for Minecraft servers"

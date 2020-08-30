@@ -15,6 +15,9 @@ public class DBManager {
   Connection dataCon;
   Connection priceCon;
 
+  /**
+   * Creates a connection with the Data and Price databases.
+   */
   public void connect() {
     if (dataCon == null) {
       try {
@@ -37,6 +40,9 @@ public class DBManager {
     }
   }
 
+  /**
+   * Disconnects from the Data and Price databases.
+   */
   public void disconnect() {
     if (dataCon != null) {
       try {
@@ -60,6 +66,9 @@ public class DBManager {
     }
   }
 
+  /**
+   * Creates default tables in the Data and Price databases.
+   */
   public void createTables() {
     if (dataCon == null || priceCon == null) {
       connect();
@@ -69,10 +78,22 @@ public class DBManager {
           "seller TEXT," +
           "id INTEGER DEFAULT 0," +
           "durability INTEGER DEFAULT 0," +
-          "amount INTEGER DEFAULT 0," +
+          "amount REAL DEFAULT 0," +
           "price REAL DEFAULT 0.0," +
           "timestamp INTEGER DEFAULT 0," +
           "PRIMARY KEY(buyer, seller, timestamp));";
+    try {
+      dataCon.prepareStatement(statement).execute();
+    }
+    catch (SQLException e) {
+      System.out.println("An error occurred while executing statement > " + statement + "\n" + e.getMessage());
+    }
+    statement = "CREATE TABLE IF NOT EXISTS stock (" +
+          "user TEXT," +
+          "id INTEGER DEFAULT 0," +
+          "durability INTEGER DEFAULT 0," +
+          "amount REAL DEFAULT 0," +
+          "PRIMARY KEY(user, id, durability));";
     try {
       dataCon.prepareStatement(statement).execute();
     }
@@ -103,6 +124,10 @@ public class DBManager {
     }
   }
 
+  /**
+   * Adds transaction data to the Data database.
+   * @param transaction Data object for Shop^3 transactions.
+   */
   public void addTransaction(Transaction transaction) {
     if (dataCon == null) {
       connect();
@@ -116,12 +141,17 @@ public class DBManager {
     }
   }
 
+  /**
+   * Retrieves transaction data based on the provided DataQuery.
+   * @param dataQuery Data query object for Shop^3.
+   * @return A LinkedHashSet of transaction data matching the query.
+   */
   public LinkedHashSet<Transaction> getTransactions(DataQuery dataQuery) {
     if (dataCon == null) {
       connect();
     }
     LinkedHashSet<Transaction> transactions = new LinkedHashSet<>();
-    String statement = "SELECT * FROM transactions WHERE " + dataQuery + ";";
+    String statement = "SELECT * FROM transactions " + dataQuery + ";";
     try {
       ResultSet rs = dataCon.prepareStatement(statement).executeQuery();
       while (rs.next()) {
@@ -129,7 +159,7 @@ public class DBManager {
               rs.getString("seller"),
               rs.getInt("id"),
               rs.getInt("durability"),
-              rs.getInt("amount"),
+              rs.getDouble("amount"),
               rs.getDouble("price"),
               rs.getLong("timestamp")));
       }
@@ -140,7 +170,64 @@ public class DBManager {
     return transactions;
   }
 
-  public void addEMC(int id, int durability, double value) {
+  /**
+   * Sets a user's stock count for the specified item.
+   * @param user A user's UUID without dashes.
+   * @param id An item's ID
+   * @param durability An item's durability.
+   * @param amount The amount of stock the user has.
+   */
+  public void setStock(String user, int id, int durability, double amount) {
+    if (dataCon == null) {
+      connect();
+    }
+    String statement = "REPLACE INTO stock (user, id, durability, amount) VALUES (" +
+          "\"" + user.toLowerCase() + "\"," +
+          id + "," +
+          durability + "," +
+          amount + ");";
+    try {
+      priceCon.prepareStatement(statement).execute();
+    }
+    catch (SQLException e) {
+      System.out.println("An error occurred while executing statement > " + statement + "\n" + e.getMessage());
+    }
+  }
+
+  /**
+   * Retrieves the user's stock count for the specified item.
+   * @param user A user's UUID without dashes.
+   * @param id An item's ID.
+   * @param durability An item's durability.
+   * @return The amount of stock the user has.
+   */
+  public double getStock(String user, int id, int durability) {
+    if (dataCon == null) {
+      connect();
+    }
+    String statement = "SELECT amount FROM stock WHERE " +
+          "user=\"" + user.toLowerCase() + "\" AND " +
+          "id=" + id + " AND " +
+          "durability=" + durability + ";";
+    try {
+      ResultSet rs = priceCon.prepareStatement(statement).executeQuery();
+      if (rs.next()) {
+        return rs.getDouble("amount");
+      }
+    }
+    catch (SQLException e) {
+      System.out.println("An error occurred while executing statement > " + statement + "\n" + e.getMessage());
+    }
+    return 0;
+  }
+
+  /**
+   * Sets the EMC value of the specified item.
+   * @param id An item's ID.
+   * @param durability An item's durability.
+   * @param value An item's EMC value.
+   */
+  public void setEMC(int id, int durability, double value) {
     if (priceCon == null) {
       connect();
     }
@@ -156,7 +243,13 @@ public class DBManager {
     }
   }
 
-  public void addPrice(int id, int durability, double value) {
+  /**
+   * Sets the price value of the specified item.
+   * @param id An item's ID.
+   * @param durability An item's durability.
+   * @param value An item's price.
+   */
+  public void setPrice(int id, int durability, double value) {
     if (priceCon == null) {
       connect();
     }
@@ -172,6 +265,12 @@ public class DBManager {
     }
   }
 
+  /**
+   * Retrieves the EMC value of the specified item.
+   * @param id An item's ID.
+   * @param durability An item's durability.
+   * @return The EMC value of the item. 0 if not present.
+   */
   public double getEMC(int id, int durability) {
     if (priceCon == null) {
       connect();
@@ -186,9 +285,15 @@ public class DBManager {
     catch (SQLException e) {
       System.out.println("An error occurred while executing statement > " + statement + "\n" + e.getMessage());
     }
-    return -1;
+    return 0;
   }
 
+  /**
+   * Retrieves the price value of the specified item.
+   * @param id An item's ID.
+   * @param durability An item's durability.
+   * @return The price of an item. 0 if not present.
+   */
   public double getPrice(int id, int durability) {
     if (priceCon == null) {
       connect();
@@ -203,7 +308,7 @@ public class DBManager {
     catch (SQLException e) {
       System.out.println("An error occurred while executing statement > " + statement + "\n" + e.getMessage());
     }
-    return -1;
+    return 0;
   }
 
 }
