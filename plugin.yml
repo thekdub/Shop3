@@ -9,12 +9,60 @@ database: true
 description: "A powerful chat based shop system for Minecraft servers"
 prefix: "[Shop3]"
 commands:
-  shop3:
+  Shop3:
     description: "View information about the Shop^3 plugin."
     usage: "/Shop3"
     aliases: [shop,shopcubed,shopcube]
     permission: "shop3.command.shop3"
     permission-message: "You do not have permission to use /Shop3!"
+  Buy:
+    description: "Purchase items."
+    usage: "/Buy"
+    aliases: [purchase]
+    permission: "shop3.command.buy"
+    permission-message: "You do not have permission to use /Buy!"
+  CancelSell:
+    description: "Cancel the sale of items you're selling."
+    usage: "/CancelSell"
+    aliases: "[stopsale,stopsell,cancelsale,unsell]"
+    permission: "shop3.command.cancelsell"
+    permission-message: "You do not have permission to use /CancelSell!"
+  EMC:
+    description: "View and manage EMC values for items."
+    usage: "/EMC"
+    aliases: "[emcvalue]"
+    permission: "shop3.command.emc"
+    permission-message: "You do not have permission to use /EMC!"
+  Price:
+    description: "View and manage price values for items."
+    usage: "/Price"
+    aliases: "[prices,value,values,worth]"
+    permission: "shop3.command.price"
+    permission-message: "You do not have permission to use /Price!"
+  QuickSell:
+    description: "Quickly sell an item directly to the server for a reduced price."
+    usage: "/QuickSell"
+    aliases: "[fastsell,instantsell,fsell,isell,qsell]"
+    permission: "shop3.command.quicksell"
+    permission-message: "You do not have permission to use /QuickSell!"
+  Sell:
+    description: "Place an item up for sale."
+    usage: "/Sell"
+    aliases: "[]"
+    permission: "shop3.command.sell"
+    permission-message: "You do not have permission to use /Sell!"
+  Selling:
+    description: "View a list of items you're selling."
+    usage: "/Selling"
+    aliases: "[mystock]"
+    permission: "shop3.command.selling"
+    permission-message: "You do not have permission to use /Selling!"
+  Stock:
+    description: "View global stock information."
+    usage: "/Stock"
+    aliases: "[globalstock,allselling]"
+    permission: "shop3.command.stock"
+    permission-message: "You do not have permission to use /Stock!"
 
 permissions:
   shop3.*:

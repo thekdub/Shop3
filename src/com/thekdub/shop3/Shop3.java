@@ -30,7 +30,7 @@ public class Shop3 extends JavaPlugin {
       return;
     }
     getLogger().log(Level.INFO, "Hooked Vault Economy successfully!");
-    //registerCommands();
+    registerCommands();
   }
   
   public void onDisable() {
@@ -52,28 +52,16 @@ public class Shop3 extends JavaPlugin {
     return economy != null;
   }
 
-//  private void registerCommands() {
-//    getCommand("Buy").setExecutor(new CmdBuy());
-//    getCommand("CancelSell").setExecutor(new CmdCancelSell());
-//    getCommand("QuickSell").setExecutor(new CmdQuickSell());
-//    getCommand("Sell").setExecutor(new CmdSell());
-//    getCommand("Selling").setExecutor(new CmdSelling());
-//    getCommand("Shop3").setExecutor(new CmdShop3());
-//    getCommand("Stock").setExecutor(new CmdStock());
-//  }
-
-
-  public static void main(String[] args) {
-
-    String buyer = "thekdub";
-    String seller = "server";
-    int id = 263;
-    int durability = 0;
-    int amount = 100;
-    double price = 1000.03;
-    long timestamp = System.currentTimeMillis();
-    System.out.println(String.format("%s purchased %dx %d:%d from %s for $%.2f on %7$tF %7$tI:%7$tM %7$Tp %7$tZ",
-          buyer, amount, id, durability, seller, price, timestamp));
+  private void registerCommands() {
+    getCommand("Buy").setExecutor(this);
+    getCommand("CancelSell").setExecutor(this);
+    getCommand("EMC").setExecutor(this);
+    getCommand("Price").setExecutor(this);
+    getCommand("QuickSell").setExecutor(this);
+    getCommand("Sell").setExecutor(this);
+    getCommand("Selling").setExecutor(this);
+    getCommand("Shop3").setExecutor(this);
+    getCommand("Stock").setExecutor(this);
   }
 
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -91,6 +79,10 @@ public class Shop3 extends JavaPlugin {
         return CmdBuy.execute(sender, cmd, args);
       case "cancelsell":
         return CmdCancelSell.execute(sender, cmd, args);
+      case "emc":
+        return false; // TODO: Add CmdEMC
+      case "price":
+        return false; // TODO: Add CmdPrice
       case "quicksell":
         return CmdQuickSell.execute(sender, cmd, args);
       case "sell":
@@ -105,5 +97,4 @@ public class Shop3 extends JavaPlugin {
         return false;
     }
   }
-
 }

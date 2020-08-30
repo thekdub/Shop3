@@ -1,8 +1,11 @@
 # Enable Shop^3 commands.
 # Changing a command to false will remove access for all users without the Shop3.Admin permission.
+# Default: true
 commands:
   buy: true
   cancelsell: true
+  emc: true
+  price: true
   quicksell: true
   sell: true
   selling: true
@@ -10,3 +13,17 @@ commands:
   shop3.insight: true
   shop3.history: true
   stock: true
+
+# Configure to change whether or not Shop^3 should use EMC to automatically calculate prices.
+# If disabled, prices set through /price will be used instead of EMC values set through /EMC
+# Default: true
+use_emc_based_pricing: true
+# Configure to change the value of EMC.
+# Default: 32
+emc_per_dollar: 32
+
+# Configure to enable or disable dynamic pricing changes to better match the current economy.
+# Default: true
+use_dynamic_pricing: true
+#
+dynamic_pricing_range: .6

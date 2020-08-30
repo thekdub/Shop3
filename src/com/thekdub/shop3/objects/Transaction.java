@@ -12,8 +12,8 @@ public class Transaction {
   public final long timestamp;
   
   public Transaction(String buyer, String seller, int id, int durability, int amount, double price, long timestamp) {
-    this.buyer = buyer;
-    this.seller = seller;
+    this.buyer = buyer.toLowerCase();
+    this.seller = seller.toLowerCase();
     this.id = id;
     this.durability = durability;
     this.amount = amount;
@@ -48,5 +48,9 @@ public class Transaction {
   public String toString() {
     return String.format("%s purchased %dx %d:%d from %s for $%.2f on %7$tF %7$tI:%7$tM %7$Tp %7$tZ",
         buyer, amount, id, durability, seller, price, timestamp);
+  }
+
+  public String toDatabaseString() {
+    return String.format("\"%s\",\"%s\",%d,%d,%d,%f,%d", buyer, seller, id, durability, amount, price, timestamp);
   }
 }
