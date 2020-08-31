@@ -105,9 +105,9 @@ public class Shop3 extends JavaPlugin {
       case "cancelsell":
         return CmdCancelSell.execute(sender, cmd, args);
       case "emc":
-        return false; // TODO: Add CmdEMC
+        return CmdEMC.execute(sender, cmd, args);
       case "price":
-        return false; // TODO: Add CmdPrice
+        return CmdPrice.execute(sender, cmd, args);
       case "quicksell":
         return CmdQuickSell.execute(sender, cmd, args);
       case "sell":
