@@ -27,3 +27,5 @@ emc_per_dollar: 32
 use_dynamic_pricing: true
 #
 dynamic_pricing_range: .6
+
+allow_admin_sale: false

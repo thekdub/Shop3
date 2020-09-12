@@ -46,13 +46,22 @@ public class Shop3 extends JavaPlugin {
   public void onDisable() {
     dbManager.disconnect();
   }
-  
+
   public static Shop3 getInstance() {
     return instance;
   }
 
+  public static DBManager getDbManager() {
+    return dbManager;
+  }
+
+  public static Economy getEconomy() {
+    return economy;
+  }
+
   /**
    * Hooks into the Vault economy provider.
+   *
    * @return True = Economy hooked successfully. False = Economy hook failed.
    */
   private boolean hookEconomy() {

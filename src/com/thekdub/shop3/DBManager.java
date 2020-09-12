@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 
 public class DBManager {
@@ -214,18 +215,70 @@ public class DBManager {
       if (rs.next()) {
         return rs.getDouble("amount");
       }
-    }
-    catch (SQLException e) {
+    } catch (SQLException e) {
       System.out.println("An error occurred while executing statement > " + statement + "\n" + e.getMessage());
     }
     return 0;
   }
 
   /**
-   * Sets the EMC value of the specified item.
-   * @param id An item's ID.
+   * Retrieves the stock count for the specified item.
+   *
+   * @param id         An item's ID.
    * @param durability An item's durability.
-   * @param value An item's EMC value.
+   * @return The amount of stock available.
+   */
+  public double getStock(int id, int durability) {
+    if (dataCon == null) {
+      connect();
+    }
+    String statement = "SELECT amount FROM stock WHERE " +
+          "id=" + id + " AND " +
+          "durability=" + durability + ";";
+    try {
+      ResultSet rs = priceCon.prepareStatement(statement).executeQuery();
+      if (rs.next()) {
+        return rs.getDouble("amount");
+      }
+    } catch (SQLException e) {
+      System.out.println("An error occurred while executing statement > " + statement + "\n" + e.getMessage());
+    }
+    return 0;
+  }
+
+
+  /**
+   * Retrieves a hashmap of users selling the given item and the amount being sold.
+   *
+   * @param id         An item's ID.
+   * @param durability An item's durability.
+   * @return A hashmap of users, amount of item being sold.
+   */
+  public HashMap<String, Double> getUsersSelling(int id, int durability) {
+    if (dataCon == null) {
+      connect();
+    }
+    HashMap<String, Double> data = new HashMap<>();
+    String statement = "SELECT user, amount FROM stock WHERE " +
+          "id=" + id + " AND " +
+          "durability=" + durability + ";";
+    try {
+      ResultSet rs = priceCon.prepareStatement(statement).executeQuery();
+      while (rs.next()) {
+        data.put(rs.getString("user"), rs.getDouble("amount"));
+      }
+    } catch (SQLException e) {
+      System.out.println("An error occurred while executing statement > " + statement + "\n" + e.getMessage());
+    }
+    return data;
+  }
+
+  /**
+   * Sets the EMC value of the specified item.
+   *
+   * @param id         An item's ID.
+   * @param durability An item's durability.
+   * @param value      An item's EMC value.
    */
   public void setEMC(int id, int durability, double value) {
     if (priceCon == null) {
